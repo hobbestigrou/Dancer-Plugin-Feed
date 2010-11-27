@@ -29,7 +29,7 @@ register create_feed => sub {
         $format = $settings->{format} or die "format is missing";
     }
 
-    if ($format !~ /^(?:atom|rss)$/) {
+    if ($format !~ /^(?:atom|rss)$/i) {
         die "unknown format";
     }
 
@@ -54,7 +54,7 @@ sub _create_feed {
     } @feed_properties;
 
     foreach my $entry (@$entries) {
-        my $e = XML::Feed::Entry->new();
+        my $e = XML::Feed::Entry->new($format);
 
         map {
             my $val = $entry->{$_};
@@ -81,6 +81,10 @@ sub _create_rss_feed {
 
 register_plugin;
 
+=head1 NAME
+
+Dancer::Plugin::Feed - easy to generate feed rss or atom for Dancer applications.
+
 =head1 SYNOPSIS
 
     use Dancer;
@@ -99,16 +103,9 @@ register_plugin;
 
     dance;
 
-=head1 NAME
-
-Dancer::Plugin::Feed - easy to generate feed rss or atom for Dancer applications.
-
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
-Provides an easy generate feed rss or atom 
-keyword within your L<Dancer> application.
+Provides an easy generate feed rss or atom keyword within your L<Dancer> application. This module relies on L<XML::Feed>. Please, consult the documentation of L<XML::Feed> and L<XML::Feed::Entry>.
 
 =head1 CONFIGURATION
 
@@ -132,6 +129,40 @@ keyword within your L<Dancer> application.
                      updateBase: "1901-01-01T00:00+00:00",
 
              #The title, link, and description, are required for RSS 1.0. language is required for RSS 0.91. Version are required for all version. The other parameters are optional for RSS 0.91 and 1.0. 
+
+=head1 FUNCTIONS
+
+=head2 create_feed
+
+This function returns a XML feed. Accepted parameters are :
+
+=over 4
+
+=item format (required)
+
+The B<Content-Type> header will be set to the appropriate value
+
+=item title
+
+=item base
+
+=item link
+
+=item tagline
+
+=item description
+
+=item author
+
+=item language
+
+=item copyright
+
+=item self_link
+
+=item modified
+
+=back
 
 =head1 AUTHOR
 

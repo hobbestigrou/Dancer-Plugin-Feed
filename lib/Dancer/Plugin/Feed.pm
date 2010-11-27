@@ -1,54 +1,83 @@
 package Dancer::Plugin::Feed;
 
-use strict;
-use warnings;
 use Dancer ':syntax';
 use Dancer::Plugin;
-
-=head1 NAME
-
-Dancer::Plugin::Feed - easy to generate feed rss or atom 
-for Dancer applications.
-
-=cut
+use XML::Feed;
 
 our $VERSION = '0.1';
 
 my $settings = plugin_setting;
 
-register generate_rss => sub {
-    my ( $item_detail ) = @_;
+my $ct = {
+    atom => 'application/atom+xml',
+    rss  => 'application/rss+xml',
+};
 
-    my $feed_rss = Dancer::Plugin::Feed::RSS->new($item_detail);
+my @feed_properties =
+  qw/format title base link tagline description author language copyright self_link modified/;
 
-    if ( $settings->{version} eq '0.9' ) {
-        if ( length($settings->{title}) > 40 ) {
-            die 'The title cannot be more the 40 characters';
-        }
-        if ( length($settings->{link}) > 500 ) {
-            die 'the link cannot be more the 500 characters';
-        }
-        if ( length($settings->{description}) > 500 ) {
-            die 'the description cannot be more the 500 characters';
-        }
+my @entries_properties = qw/
+  title base link content summary category tags author id issued modified
+  /;
+
+register create_feed => sub {
+    my (%params) = @_;
+
+    my $format = delete $params{format};
+
+    if (!$format) {
+        $format = $settings->{format} or die "format is missing";
     }
-    
-    if ( $settings->{version} eq '1.0' ) {
-        if ( ! $settings->{title} || ! $settings->{link} 
-             || ! $settings->{description} ) {
-            die 'The title, link, and description, are required for RSS 1.0.';
-        }
+
+    if ($format !~ /^(?:atom|rss)$/) {
+        die "unknown format";
     }
-    
-    my $file_name = $settings->{appdir} . $item_detail->{file_name};
-    
-    if ( -e $file_name ) {
-        $feed_rss->update_rss();
-    }
-    else {
-        $feed_rss->write();
+
+    if ($format =~ /^atom$/i) {
+        _create_atom_feed(\%params);
+    }elsif($format =~/^rss$/i) {
+        _create_rss_feed(\%params);
+    }else{
+        die "unknown format";
     }
 };
+
+sub _create_feed {
+    my ($format, $params) = @_;
+    my $entries = delete $params->{entries};
+    
+    my $feed = XML::Feed->new($format);
+
+    map {
+        my $val = $params->{$_} || $settings->{$_};
+        $feed->$_($val) if ($val);
+    } @feed_properties;
+
+    foreach my $entry (@$entries) {
+        my $e = XML::Feed::Entry->new();
+
+        map {
+            my $val = $entry->{$_};
+            $e->$_($val) if $val
+        } @entries_properties;
+        
+        $feed->add_entry($e);
+    }
+
+    return $feed->as_xml;
+}
+
+sub _create_atom_feed {
+    my $params = shift;
+    content_type($ct->{atom});
+    _create_feed('Atom', $params);
+}
+
+sub _create_rss_feed {
+    my $params = shift;
+    content_type($ct->{rss});
+    _create_feed('RSS', $params);
+}
 
 register_plugin;
 
@@ -57,39 +86,24 @@ register_plugin;
     use Dancer;
     use Dancer::Plugin::Feed;
 
-    get '/feed' => sub {
-        my $add_item = {
-            title        => "feed title",
-            link         => "http://your_web_site.com/0101.html",
-            description  => "the one-stop-shop for all your Linux software needs",
-            dc => {
-                subject  => "X11/Utilities",
-                creator  => "Your name",
-            },
-            file_name => 'all.rdf'
-        };
+    get '/feed/:format' => sub {
+      my @entries = map { { title => "entry $_" } } ( 1 .. 10 );
 
-        my $error = generate_rss( $add_item );
-    };
-    
-   get '/feed/:tag' => sub {
-        my $add_item = {
-            title        => "feed title",
-            link         => "http://your_web_site.com/news/0101.html",
-            description  => "the one-stop-shop for all your Linux software needs",
-            dc => {
-                subject  => "X11/Utilities",
-                creator  => "Your Name",
-            },
-            file_name => "$tag.rdf"
-        };
-
-        my $error = generate_rss( $add_item );
+      my $feed = create_feed(
+        format  => params->{format},
+        title   => 'TestApp',
+        entries => \@entries,
+      );
+      return $feed;
     };
 
-    
     dance;
 
+=head1 NAME
+
+Dancer::Plugin::Feed - easy to generate feed rss or atom for Dancer applications.
+
+=head1 SYNOPSIS
 
 =head1 DESCRIPTION
 

@@ -42,11 +42,37 @@ register create_feed => sub {
     }
 };
 
+register create_atom_feed => sub {
+    my (%params) = @_;
+    _create_atom_feed(\%params);
+};
+
+register create_rss_feed => sub {
+    my (%params) = @_;
+    _create_rss_feed(\%params);
+};
+
+sub _validate_format {
+    my $params = shift;
+    my $format = delete $params->{format};
+
+    if (!$format) {
+        my $settings = plugin_setting;
+        $format = $settings->{format} or die "format is missing";
+    }
+
+    if ($format !~ /^(?:atom|rss)$/i) {
+        die "unknown format";
+    }
+    return $format;
+}
+
 sub _create_feed {
     my ($format, $params) = @_;
     my $entries = delete $params->{entries};
     
     my $feed = XML::Feed->new($format);
+    my $settings = plugin_setting;
 
     map {
         my $val = $params->{$_} || $settings->{$_};

@@ -3,6 +3,7 @@ MANIFEST
 Makefile.PL
 README
 lib/Dancer/Plugin/Feed.pm 
-lib/Dancer/Plugin/Feed/RSS.pm 
 t/00-load.t
+t/01-basic.t 
+t/lib/TestApp.pm 
 TODO

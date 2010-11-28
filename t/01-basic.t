@@ -9,7 +9,7 @@ use Dancer::Test;
 use t::lib::TestApp;
 use XML::Feed;
 
-#plan tests => 2;
+plan tests => 32;
 
 my ($res, $feed);
 
@@ -35,5 +35,3 @@ like $@, qr/unknown format/;
 setting plugins => { Feed => { format => 'atom' } };
 ok ($res = dancer_response(GET => '/feed'));
 is ($res->header('Content-Type'), 'application/atom+xml');
-
-done_testing;

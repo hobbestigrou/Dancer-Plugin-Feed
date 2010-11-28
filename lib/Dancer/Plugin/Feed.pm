@@ -99,6 +99,8 @@ sub _create_rss_feed {
 
 register_plugin;
 
+1;
+
 =head1 NAME
 
 Dancer::Plugin::Feed - easy to generate feed rss or atom for Dancer applications.
@@ -109,45 +111,31 @@ Dancer::Plugin::Feed - easy to generate feed rss or atom for Dancer applications
     use Dancer::Plugin::Feed;
 
     get '/feed/:format' => sub {
-      my @entries = map { { title => "entry $_" } } ( 1 .. 10 );
-
-      my $feed = create_feed(
-        format  => params->{format},
-        title   => 'TestApp',
-        entries => \@entries,
-      );
-      return $feed;
+        my $feed = create_feed(
+            format  => params->{format},
+            title   => 'my great feed',
+            entries => _get_entries(),
+        );
+        return $feed;
     };
+
+    sub _get_entries {
+        [ map { { title => "entry $_" } } ( 1 .. 10 ) ];
+    }
 
     dance;
 
 =head1 DESCRIPTION
 
-Provides an easy generate feed rss or atom keyword within your L<Dancer> application. This module relies on L<XML::Feed>. Please, consult the documentation of L<XML::Feed> and L<XML::Feed::Entry>.
+Provides an easy way to generate RSS or Atom feed. This module relies on L<XML::Feed>. Please, consult the documentation of L<XML::Feed> and L<XML::Feed::Entry>.
 
 =head1 CONFIGURATION
 
-     plugins:
-         Feed:
-             version: '1.0'
-             channel:
-                 title: 'Feed title'
-                 link: 'http://your_web_site.com'
-                 description: 'the one-stop-shop for all your Linux software needs'
-                 dc:
-                     date: '2000-08-23T07:00+00:00'
-                     subject: 'Linux Software'
-                     creator: 'scoop@freshmeat.net'
-                     publisher:'scoop@freshmeat.net'
-                     rights: 'Copyright 1999, Freshmeat.net'
-                     language: 'en-us'
-                   syn:
-                     updatePeriod: "hourly",
-                     updateFrequency: "1",
-                     updateBase: "1901-01-01T00:00+00:00",
-
-             #The title, link, and description, are required for RSS 1.0. language is required for RSS 0.91. Version are required for all version. The other parameters are optional for RSS 0.91 and 1.0. 
-
+ plugins:
+   Feed:
+     title: my great feed
+     format: Atom
+ 
 =head1 FUNCTIONS
 
 =head2 create_feed
@@ -159,6 +147,10 @@ This function returns a XML feed. Accepted parameters are :
 =item format (required)
 
 The B<Content-Type> header will be set to the appropriate value
+
+=item entries
+
+An arrayref containing a list of entries. Each item will be transformed to an L<XML::Feed::Entries> object.
 
 =item title
 
@@ -181,6 +173,14 @@ The B<Content-Type> header will be set to the appropriate value
 =item modified
 
 =back
+
+=head2 create_atom_feed
+
+This method call B<create_feed> by setting the format to Atom.
+
+=head2 create_rss_feed
+
+This method call B<create_feed> by setting the format to RSS.
 
 =head1 AUTHOR
 
@@ -221,9 +221,5 @@ See http://dev.perl.org/licenses/ for more information.
 =head1 SEE ALSO
 
 L<Dancer>
-L<XML::RSS>
-l<XML::ATOM>
-
-=cut 
-
-1;
+L<XML::Feed>
+L<XML::Feed::Entry>

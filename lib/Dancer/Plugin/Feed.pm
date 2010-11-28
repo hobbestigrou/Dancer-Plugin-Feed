@@ -6,7 +6,7 @@ use XML::Feed;
 
 our $VERSION = '0.1';
 
-my $settings = plugin_setting;
+
 
 my $ct = {
     atom => 'application/atom+xml',
@@ -23,16 +23,8 @@ my @entries_properties = qw/
 register create_feed => sub {
     my (%params) = @_;
 
-    my $format = delete $params{format};
-
-    if (!$format) {
-        $format = $settings->{format} or die "format is missing";
-    }
-
-    if ($format !~ /^(?:atom|rss)$/i) {
-        die "unknown format";
-    }
-
+    my $format = _validate_format(\%params);
+    
     if ($format =~ /^atom$/i) {
         _create_atom_feed(\%params);
     }elsif($format =~/^rss$/i) {

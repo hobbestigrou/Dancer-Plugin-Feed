@@ -5,22 +5,35 @@ use Dancer::Plugin::Feed;
 
 get '/feed' => sub {
     create_feed(
-        title => 'this is a test',
-        entries => [
-            {title => 'first entry'}
-        ],
+        title   => 'this is a test',
+        entries => [ { title => 'first entry' } ],
     );
 };
 
 get '/feed/:format' => sub {
-    my @entries = map { { title => "entry $_" } } ( 1 .. 10 );
-
-    my $feed = create_feed(
+    create_feed(
         format  => params->{format},
-        title   => 'TestApp',
-        entries => \@entries,
+        title   => 'TestApp with ' . params->{format},
+        entries => _get_entries(),
     );
-    return $feed;
 };
+
+get '/other/feed/rss' => sub {
+    create_rss_feed(
+        title   => 'TestApp with rss',
+        entries => _get_entries(),
+    );
+};
+
+get '/other/feed/atom' => sub {
+    create_atom_feed(
+        title   => 'TestApp with atom',
+        entries => _get_entries(),
+    );
+};
+
+sub _get_entries {
+    [map { { title => "entry $_" } } ( 1 .. 10 )];
+}
 
 1;

@@ -140,7 +140,9 @@ Provides an easy way to generate RSS or Atom feed. This module relies on L<XML::
 
 =head2 create_feed
 
-This function returns a XML feed. Accepted parameters are :
+This function returns a XML feed. All parameters can be define in the configuration
+
+Accepted parameters are:
 
 =over 4
 

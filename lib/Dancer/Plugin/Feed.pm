@@ -4,7 +4,7 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use XML::Feed;
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 
 
@@ -24,7 +24,7 @@ register create_feed => sub {
     my (%params) = @_;
 
     my $format = _validate_format(\%params);
-    
+
     if ($format =~ /^atom$/i) {
         _create_atom_feed(\%params);
     }elsif($format =~/^rss$/i) {
@@ -62,7 +62,7 @@ sub _validate_format {
 sub _create_feed {
     my ($format, $params) = @_;
     my $entries = delete $params->{entries};
-    
+
     my $feed = XML::Feed->new($format);
     my $settings = plugin_setting;
 
@@ -78,7 +78,7 @@ sub _create_feed {
             my $val = $entry->{$_};
             $e->$_($val) if $val
         } @entries_properties;
-        
+
         $feed->add_entry($e);
     }
 
@@ -100,6 +100,8 @@ sub _create_rss_feed {
 register_plugin;
 
 1;
+
+=encoding UTF-8
 
 =head1 NAME
 
@@ -135,7 +137,7 @@ Provides an easy way to generate RSS or Atom feed. This module relies on L<XML::
    Feed:
      title: my great feed
      format: Atom
- 
+
 =head1 FUNCTIONS
 
 =head2 create_feed

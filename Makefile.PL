@@ -10,6 +10,6 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
         'XML::Feed'  => 0,
-        'Dancer'     => 1.175,
+        'Dancer'     => 1.2001,
     },
 );

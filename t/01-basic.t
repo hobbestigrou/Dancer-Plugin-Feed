@@ -13,8 +13,8 @@ plan tests => 32;
 
 my ($res, $feed);
 
-eval { $res = dancer_response(GET => '/feed'); };
-like $@, qr/format is missing/;
+$res = dancer_response GET => '/feed';
+is $res->{status}, 500, "response for GET /feed is 500";
 
 for my $format (qw/atom rss/) {
     for my $route ("/feed/$format", "/other/feed/$format") {
@@ -29,8 +29,10 @@ for my $format (qw/atom rss/) {
     }
 }
 
-eval { $res = dancer_response(GET => '/feed/foo')};
-like $@, qr/unknown format/;
+#eval { $res = dancer_response(GET => '/feed/foo')};
+#like $@, qr/unknown format/;
+$res = dancer_response GET => '/feed/foo';
+is $res->{status}, 500, "response for GET /feed/foo is 500";
 
 setting plugins => { Feed => { format => 'atom' } };
 ok ($res = dancer_response(GET => '/feed'));

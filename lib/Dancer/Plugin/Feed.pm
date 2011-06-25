@@ -152,7 +152,7 @@ The B<Content-Type> header will be set to the appropriate value
 
 =item entries
 
-An arrayref containing a list of entries. Each item will be transformed to an L<XML::Feed::Entries> object.
+An arrayref containing a list of entries. Each item will be transformed to an L<XML::Feed::Entry> object. Each entry is an hashref. Some common attributes for these hashrefs are C<title>, C<link>, C<summary>, C<content>, C<author>, C<issued> and C<modified>. Check L<XML::Feed::Entry> for more details.
 
 =item title
 
@@ -212,7 +212,7 @@ You can find documentation for this module with the perldoc command.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2010 Natal Ngétal.
+Copyright 2010-2011 Natal Ngétal.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published

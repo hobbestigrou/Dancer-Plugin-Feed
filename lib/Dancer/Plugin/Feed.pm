@@ -14,9 +14,8 @@ my $ct = {
 my @feed_properties =
   qw/format title base link tagline description author language copyright self_link modified/;
 
-my @entries_properties = qw/
-  title base link content summary category tags author id issued modified
-  /;
+my @entries_properties =
+  qw/title base link content summary category tags author id issued modified enclosure/;
 
 register create_feed => sub {
     my (%params) = @_;

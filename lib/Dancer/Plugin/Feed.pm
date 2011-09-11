@@ -4,7 +4,7 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use XML::Feed;
 
-our $VERSION = '0.5';
+our $VERSION = '0.6';
 
 my $ct = {
     atom => 'application/atom+xml',

@@ -1,5 +1,8 @@
 Revision history for Dancer-Plugin-FormValidator
 
+0.6 12/09/2011
+    Simplifying the example code in the pod. Thanks to Naveed Massjouni.
+
 0.5 09/09/2011
     Add support for RSS enclosure. Thanks to Tyler Durden.
 

@@ -5,7 +5,7 @@ use Dancer::Plugin;
 use Dancer::Exception qw(:all);
 use XML::Feed;
 
-our $VERSION = '0.6';
+#ABSTRACT: Easy to generate feed rss or atom for Dancer applications.
 
 my $ct = {
     atom => 'application/atom+xml',
@@ -115,10 +115,6 @@ register_plugin;
 
 =encoding UTF-8
 
-=head1 NAME
-
-Dancer::Plugin::Feed - easy to generate feed rss or atom for Dancer applications.
-
 =head1 SYNOPSIS
 
     use Dancer;
@@ -222,10 +218,6 @@ This method call B<create_feed> by setting the format to RSS.
 
 =back
 
-=head1 AUTHOR
-
-Natal Ngétal, C<< <hobbestigrou@erakis.im> >>
-
 =head1 CONTRIBUTING
 
 This module is developed on Github at:
@@ -247,16 +239,6 @@ Please report any bugs or feature requests in github.
 You can find documentation for this module with the perldoc command.
 
     perldoc Dancer::Plugin::Feed
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2010-2011 Natal Ngétal.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
 
 =head1 SEE ALSO
 

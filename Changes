@@ -1,4 +1,8 @@
 Revision history for Dancer-Plugin-Feed 
+
+0.8 10/07/2012
+    * [Tests] 01-basic: Fix wrong namespace (Closes #7) (Hobbestigrou)
+    * [Configuration] Dist: Fix minimal version of Dancer. (Hobbestigrou)
  
 0.7 17/04/2012 
     * [Core] Feed: Adapt to Dist::Zilla. (Hobbestigrou)

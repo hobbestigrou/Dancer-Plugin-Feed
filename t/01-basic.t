@@ -6,7 +6,9 @@ use Test::More import => ['!pass'];
 use Dancer;
 use Dancer::Test;
 
-use t::lib::TestApp;
+use lib 't/lib';
+use TestApp;
+
 use XML::Feed;
 
 plan tests => 32;

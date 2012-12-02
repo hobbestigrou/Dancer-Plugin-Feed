@@ -1,5 +1,10 @@
 Revision history for Dancer-Plugin-Feed 
 
+NEXT
+
+    * Support Dancer 2 (while remaining compatible with Dancer 1).
+      (Alexis Sukrieh)
+
 0.8 10/07/2012
     * [Tests] 01-basic: Fix wrong namespace (Closes #7) (Hobbestigrou)
     * [Configuration] Dist: Fix minimal version of Dancer. (Hobbestigrou)

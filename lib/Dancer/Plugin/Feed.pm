@@ -27,7 +27,7 @@ my @entries_properties =
   qw/title base link content summary category tags author id issued modified enclosure/;
 
 register create_feed => sub {
-    my (%params) = @_;
+    my ($dsl, %params) = plugin_args(@_);
 
     my $format = _validate_format(\%params);
 
@@ -41,13 +41,13 @@ register create_feed => sub {
 };
 
 register create_atom_feed => sub {
-    my (%params) = @_;
+    my ($dsl, %params) = plugin_args(@_);
 
     _create_atom_feed(\%params);
 };
 
 register create_rss_feed => sub {
-    my (%params) = @_;
+    my ($dsl, %params) = plugin_args(@_);
 
     _create_rss_feed(\%params);
 };
@@ -109,7 +109,7 @@ sub _create_rss_feed {
     _create_feed('RSS', $params);
 }
 
-register_plugin;
+register_plugin for_versions => [1, 2];
 
 1;
 

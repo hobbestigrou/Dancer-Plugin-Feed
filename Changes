@@ -1,6 +1,6 @@
 Revision history for Dancer-Plugin-Feed 
 
-NEXT
+{{$NEXT}}
 
     * Support Dancer 2 (while remaining compatible with Dancer 1).
       (Alexis Sukrieh)

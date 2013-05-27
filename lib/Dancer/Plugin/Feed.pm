@@ -33,9 +33,11 @@ register create_feed => sub {
 
     if ($format =~ /^atom$/i) {
         _create_atom_feed(\%params);
-    }elsif($format =~/^rss$/i) {
+    }
+    elsif($format =~/^rss$/i) {
         _create_rss_feed(\%params);
-    }else{
+    }
+    else{
         raise FeedInvalidFormat => $format;
     }
 };
@@ -71,9 +73,8 @@ sub _validate_format {
 sub _create_feed {
     my ($format, $params) = @_;
 
-    my $entries = delete $params->{entries};
-
-    my $feed = XML::Feed->new($format);
+    my $entries  = delete $params->{entries};
+    my $feed     = XML::Feed->new($format);
     my $settings = plugin_setting;
 
     map {
@@ -109,7 +110,7 @@ sub _create_rss_feed {
     _create_feed('RSS', $params);
 }
 
-register_plugin for_versions => [1, 2];
+register_plugin for_versions => [1];
 
 1;
 

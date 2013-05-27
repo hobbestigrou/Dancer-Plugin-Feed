@@ -2,6 +2,10 @@ Revision history for Dancer-Plugin-Feed
 
 {{$NEXT}}
 
+1.131470  2013-05-27 16:23:48 Europe/Paris
+
+    * Cosmetic things and update version_for.
+
 1.123370  2012-12-02 23:58:01 Europe/Paris
 
     * Support Dancer 2 (while remaining compatible with Dancer 1).
